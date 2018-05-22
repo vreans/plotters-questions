@@ -5,7 +5,7 @@ import { AngularFireDatabase } from 'angularfire2/database';
 import * as $ from 'jquery';
 import { Observable } from 'rxjs';
 import { AngularFireStorage } from 'angularfire2/storage';
-import { MatDialog, MatDialogConfig } from '@angular/material';
+import { MatDialog, MatDialogConfig, MatSnackBar } from '@angular/material';
 import { QuestionComponent } from './question.component';
 @Component({
   selector: 'app-root',
@@ -50,7 +50,7 @@ export class AppComponent {
     "Aptitude",
     "Networking"];
   items: Observable<any[]>;
-  constructor(public db: AngularFireDatabase, private storage: AngularFireStorage,private dialog: MatDialog) {
+  constructor(public db: AngularFireDatabase, private storage: AngularFireStorage, private dialog: MatDialog, public snackBar: MatSnackBar) {
 
   }
 
@@ -189,6 +189,27 @@ export class AppComponent {
       else
       {
         var backendObject = this.db.object('/rounds/' + technologyNumber + '/Questions/' + this.roundName + '/' + lastQuestionID).set(questionObject);
+        backendObject
+          .then(_ => {
+            console.log('success');
+            let message = "data Uploaded successfully...Please wait while I refresh the page"
+            let action = ''
+            this.snackBar.open(message, action, {
+              duration: 2000,
+            });
+            setTimeout(() => {
+              location.reload();
+            }, 2000);
+          })
+          .catch(err => {
+            console.log(err, 'Error while uploading data');
+            let message = "Error while uploading data...Please contact Venkatesh.K (+91 7338882117)"
+            let action = ''
+            this.snackBar.open(message, action, {
+              duration: 2000,
+            });
+          }
+          );
       }
     }
     else if( this.typeofanswer == 'ImageUpload' && this.typeofquestion == 'ImageUpload')
@@ -243,8 +264,175 @@ export class AppComponent {
           optionFontSize : this.Optiontriggervalue
         }
         var backendObject = this.db.object('/rounds/' + technologyNumber + '/Questions/' + this.roundName + '/' + lastQuestionID).set(questionObject);
+      backendObject
+        .then(_ => {
+          console.log('success');
+          let message = "data Uploaded successfully...Please wait while I refresh the page"
+          let action = ''
+          this.snackBar.open(message, action, {
+            duration: 2000,
+          });
+          setTimeout(() => {
+            location.reload();
+          }, 2000);
+        })
+        .catch(err => {
+          console.log(err, 'Error while uploading data');
+          let message = "Error while uploading data...Please contact Venkatesh.K (+91 7338882117)"
+          let action = ''
+          this.snackBar.open(message, action, {
+            duration: 2000,
+          });
+        }
+        );
 
+    }
+    else if (this.typeofanswer == 'Text' && this.typeofquestion == 'ImageUpload')
+    {
+      this.pushUpload(this.QuestionImageData);
+      var technologyNumber;
+      var answer;
+      if (this.technologyName == 'dotnet') {
+        technologyNumber = 2;
+      }
+      if (this.technologyName == 'JavaUI') {
+        technologyNumber = 0;
+      }
+      if (this.technologyName == 'Iseries') {
+        technologyNumber = 1;
+      }
+      if (this.correctAnswer == 'A') {
+        answer = this.OptionTextA;
+      }
+      if (this.correctAnswer == 'B') {
+        answer = this.OptionTextB;
+      }
+      if (this.correctAnswer == 'C') {
+        answer = this.OptionTextC;
+      }
+      if (this.correctAnswer == 'D') {
+        answer = this.OptionTextD;
+      }
+      var lastQuestionID = this.questions[this.questions.length - 1].id;
+      var currentQuestionID = lastQuestionID + 1;
+      let questionObject = {
+        answer: answer,
+        options: [this.OptionTextA, this.OptionTextB, this.OptionTextC, this.OptionTextD],
+        id: currentQuestionID,
+        optionURL: "none",
+        questionURL: ['/rounds/' + technologyNumber + '/Questions/' + this.roundName + '/' + lastQuestionID + '/' + this.QuestionImageData.name],
+        passingPoint: 10,
+        points: 20,
+        question: this.QuestionBeforeText,
+        answered: false,
+        questionFontSize: this.Questiontriggervalue,
+        optionFontSize: this.Optiontriggervalue
+      }
+      if (value == 'Preview') {
+        this.openDialog(questionObject);
+      }
+      else {
+        var backendObject = this.db.object('/rounds/' + technologyNumber + '/Questions/' + this.roundName + '/' + lastQuestionID).set(questionObject);
+        backendObject
+          .then(_ => {
+            console.log('success');
+            let message = "data Uploaded successfully...Please wait while I refresh the page"
+            let action = ''
+            this.snackBar.open(message, action, {
+              duration: 2000,
+            });
+            setTimeout(() => {
+              location.reload();
+            }, 2000);
+          })
+          .catch(err => {
+            console.log(err, 'Error while uploading data');
+            let message = "Error while uploading data...Please contact Venkatesh.K (+91 7338882117)"
+            let action = ''
+            this.snackBar.open(message, action, {
+              duration: 2000,
+            });
+          }
+          );
+      }
+    }
+    else if (this.typeofanswer == 'ImageUpload' && this.typeofquestion == 'Text') {
+      this.pushUpload(this.OptionImageAData);
+      this.pushUpload(this.OptionImageBData);
+      this.pushUpload(this.OptionImageCData);
+      this.pushUpload(this.OptionImageDData);
+      var technologyNumber;
+      var answer;
+      if (this.technologyName == 'dotnet') {
+        technologyNumber = 2;
+      }
+      if (this.technologyName == 'JavaUI') {
+        technologyNumber = 0;
+      }
+      if (this.technologyName == 'Iseries') {
+        technologyNumber = 1;
+      }
+      if (this.correctAnswer == 'A') {
+        answer = 'A';
+      }
+      if (this.correctAnswer == 'B') {
+        answer = 'B';
+      }
+      if (this.correctAnswer == 'C') {
+        answer = 'C';
+      }
+      if (this.correctAnswer == 'D') {
+        answer = 'D';
+      }
+      var lastQuestionID = this.questions[this.questions.length - 1].id;
+      var currentQuestionID = lastQuestionID + 1;
+      let questionObject = {
+        answer: answer,
+        options: "none",
+        optionURL: [
+          '/rounds/' + technologyNumber + '/Questions/' + this.roundName + '/' + lastQuestionID + '/' + this.OptionImageAData.name,
+          '/rounds/' + technologyNumber + '/Questions/' + this.roundName + '/' + lastQuestionID + '/' + this.OptionImageBData.name,
+          '/rounds/' + technologyNumber + '/Questions/' + this.roundName + '/' + lastQuestionID + '/' + this.OptionImageCData.name,
+          '/rounds/' + technologyNumber + '/Questions/' + this.roundName + '/' + lastQuestionID + '/' + this.OptionImageDData.name
+        ],
+        id: currentQuestionID,
+        questionURL: "none",
+        passingPoint: 10,
+        points: 20,
+        question: this.QuestionText,
+        answered: false,
+        questionFontSize: this.Questiontriggervalue,
+        optionFontSize: this.Optiontriggervalue
+      }
+      if (value == 'Preview') {
+        this.openDialog(questionObject);
+      }
+      else {
+        var backendObject = this.db.object('/rounds/' + technologyNumber + '/Questions/' + this.roundName + '/' + lastQuestionID).set(questionObject).then();
+        backendObject
+          .then(_ => {
+            console.log('success');
+            let message = "data Uploaded successfully...Please wait while I refresh the page"
+            let action = ''
+            this.snackBar.open(message, action, {
+              duration: 2000,
+            });
+            setTimeout(() => {
+              location.reload();
+            }, 2000);
+        })
+          .catch(err => 
+            {
+            console.log(err, 'Error while uploading data');
+            let message = "Error while uploading data...Please contact Venkatesh.K (+91 7338882117)"
+            let action = ''
+            this.snackBar.open(message, action, {
+              duration: 2000,
+            });
+            }
+          );
 
+      }
     }
 
  }

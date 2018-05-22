@@ -13,6 +13,7 @@ import {
   MatCardModule,
   MatSelectModule,
   MatInputModule,
+  MatSnackBarModule,
   MatRadioModule,
   MatDialogModule,
   MatSliderModule
@@ -44,6 +45,7 @@ import { QuestionComponent } from './question.component';
     ReactiveFormsModule,
     BrowserAnimationsModule,
     MatButtonModule,
+    MatSnackBarModule,
     MatSelectModule,
     MatInputModule,
     MatCardModule,
